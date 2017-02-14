@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/home', function () {
+    return view('welcome');
+});
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
@@ -23,11 +26,18 @@ Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 Route::group([
     'prefix' => 'admin',
-   // 'middleware'=>'auth.checkrole'
+    'middleware'=>'auth.checkrole:admin'
         ], function() {
     Route::resource('categories', 'CategoriesController');
     Route::resource('products', 'ProductsController');
     Route::resource('users', 'UsersController');
     Route::resource('clients', 'ClientsController');
     Route::resource('orders', 'OrdersController');
+    Route::resource('cupoms', 'CupomsController');
+});
+Route::group([
+    'prefix' => 'custumer',
+    'middleware'=>'auth.checkrole:client'
+        ], function() {
+    Route::resource('order', 'CheckoutsController',['except'=>'edit','update','destroy']);
 });

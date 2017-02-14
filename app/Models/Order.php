@@ -8,9 +8,10 @@ class Order extends Model
 {
 
     static $STATUS = [
-        'aberto',
-        'encaminhado',
-        'fechado'
+        'pendente',
+        'a caminho',
+        'entregue',
+        'cancelado'
     ];
     protected $table = 'orders';
     protected $fillable = [
@@ -33,6 +34,10 @@ class Order extends Model
     public function client()
     {
         return $this->belongsTo(User::class, 'client_id', 'id')->with('client');
+    }
+    public function cupom()
+    {
+        return $this->hasOne(Cupom::class);
     }
     public function getTotalAttribute()
     {

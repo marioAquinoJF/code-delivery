@@ -14,6 +14,7 @@ use Delivery\Validators\ProductValidator;
  */
 class ProductRepositoryEloquent extends BaseRepository implements ProductRepository
 {
+
     /**
      * Specify Model class name
      *
@@ -24,8 +25,6 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
         return Product::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
@@ -33,4 +32,10 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    public function listing()
+    {
+        return $this->model->lists('name', 'id');
+    }
+
 }

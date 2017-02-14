@@ -25,10 +25,8 @@ class CreateClientRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required',
-            'pass_confirmation' => 'required',
-            'password' => 'required|same:pass_confirmation',
+            'user.name' => 'required',
+            'user.email' => 'required',           
             'phone' => 'required',
             'address' => 'required',
             'city' => 'required',

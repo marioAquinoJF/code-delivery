@@ -37,7 +37,6 @@ $factory->define(Delivery\Models\Product::class, function (Faker\Generator $fake
 
 $factory->define(Delivery\Models\Order::class, function (Faker\Generator $faker) {
     return [
-        'user_deliveryman_id' => rand(1, 2),
         'client_id' => rand(3, 11)
     ];
 });
@@ -57,5 +56,11 @@ $factory->define(Delivery\Models\Client::class, function (Faker\Generator $faker
         'city' => $faker->city,
         'state' => $faker->state,
         'zipcode' => $faker->postcode
+    ];
+});
+$factory->define(Delivery\Models\Cupom::class, function (Faker\Generator $faker) {
+    return [
+        'code' => rand(100,1000),
+        'value' => rand(20,60)
     ];
 });

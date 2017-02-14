@@ -8,6 +8,8 @@ use Delivery\Http\Controllers\Controller;
 use Delivery\Repositories\ClientRepository;
 use Delivery\Repositories\UserRepository;
 use Delivery\Http\Requests\CreateClientRequest;
+use Delivery\Services\ClientService;
+
 class ClientsController extends Controller
 {
 
@@ -23,10 +25,17 @@ class ClientsController extends Controller
      */
     private $userRepository;
 
-    function __construct(ClientRepository $repository, UserRepository $userRepository)
+    /**
+     *
+     * @var ClientService
+     */
+    private $service;
+
+    function __construct(ClientRepository $repository, UserRepository $userRepository, ClientService $service)
     {
         $this->repository = $repository;
         $this->userRepository = $userRepository;
+        $this->service = $service;
     }
 
     /**
@@ -58,7 +67,7 @@ class ClientsController extends Controller
      */
     public function store(CreateClientRequest $request)
     {
-        $client = $this->repository->create($request->all());
+       $client = $this->service->create($request->all());
         return redirect()->route('admin.clients.index');
     }
 
@@ -95,7 +104,8 @@ class ClientsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->repository->update($request->all(), $id);
+  
+        $this->service->update($request->all(), $id);
         return redirect()->route('admin.clients.index');
     }
 

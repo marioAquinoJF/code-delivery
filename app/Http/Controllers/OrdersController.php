@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Delivery\Http\Requests;
 use Delivery\Http\Controllers\Controller;
 use Delivery\Repositories\OrderRepository;
+use Delivery\Repositories\ProductRepository;
 use Delivery\Repositories\UserRepository;
 
 class OrdersController extends Controller
@@ -19,15 +20,26 @@ class OrdersController extends Controller
 
     /**
      *
+     * @var OrderService 
+     */
+    private $service;
+    /**
+     *
+     * @var ProductRepository 
+     */
+    private $productRepository;
+
+    /**
+     *
      * @var UserRepository 
      */
     private $userRepository;
 
-    function __construct(OrderRepository $repository, UserRepository $userRepository)
+    function __construct(OrderRepository $repository, ProductRepository $productRepository, UserRepository $userRepository)
     {
         $this->repository = $repository;
+        $this->productRepository = $productRepository;
         $this->userRepository = $userRepository;
-        
     }
 
     /**
@@ -37,7 +49,8 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = $this->repository->all();
+        $orders = $this->repository->with('items')->paginate(10);
+        //  dd($orders);
         return view('orders.index', compact('orders'));
     }
 
@@ -48,7 +61,8 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        //
+        $products = $this->productRepository->all();
+        return view('orders.create', compact('products'));
     }
 
     /**
@@ -59,7 +73,7 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -71,7 +85,7 @@ class OrdersController extends Controller
     public function show($id)
     {
         $order = $this->repository->find($id);
-        $users = $this->userRepository->deliveryMan()->lists('name','id');
+        $users = $this->userRepository->deliveryMan()->lists('name', 'id');
         $client = $order->client->client;
         return view('orders.show', compact('order', 'users', 'client'));
     }
@@ -84,10 +98,10 @@ class OrdersController extends Controller
      */
     public function edit($id)
     {
-        $users = $this->userRepository->deliveryMan()->lists('name','id');//findWhere(['role','=','deliveryMan']);
+        $users = $this->userRepository->deliveryMan()->lists('name', 'id'); //findWhere(['role','=','deliveryMan']);
         $order = $this->repository->find($id);
         $orderStatus = $this->repository->status();
-        return view('orders.edit', compact('order','users', 'orderStatus'));
+        return view('orders.edit', compact('order', 'users', 'orderStatus'));
     }
 
     /**

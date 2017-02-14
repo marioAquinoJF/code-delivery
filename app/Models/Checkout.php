@@ -1,12 +1,12 @@
 <?php
 
-namespace Delivery\Entities;
+namespace Delivery\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class User extends Model implements Transformable
+class Checkout extends Model implements Transformable
 {
     use TransformableTrait;
 

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
       |--------------------------------------------------------------------------
       | Application Debug Mode
@@ -94,7 +93,6 @@ return [
       |
      */
     'providers' => [
-
         /*
          * Laravel Framework Service Providers...
          */
@@ -133,6 +131,8 @@ return [
         Delivery\Providers\EventServiceProvider::class,
         Delivery\Providers\RouteServiceProvider::class,
         Delivery\Providers\RepositoryServiceProvider::class,
+        LucaDegasperi\OAuth2Server\Storage\FluentStorageServiceProvider::class,
+        LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider::class,
     ],
     /*
       |--------------------------------------------------------------------------
@@ -145,7 +145,6 @@ return [
       |
      */
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -180,5 +179,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Html' => Illuminate\Html\HtmlFacade::class,
         'Form' => Illuminate\Html\FormFacade::class,
+        'Authorizer' => LucaDegasperi\OAuth2Server\Facades\Authorizer::class,
     ],
 ];

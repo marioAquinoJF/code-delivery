@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Http\Request;
 /*
   |--------------------------------------------------------------------------
   | Application Routes
@@ -17,6 +17,8 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('welcome');
 });
+
+
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
@@ -40,4 +42,20 @@ Route::group([
     'middleware'=>'auth.checkrole:client'
         ], function() {
     Route::resource('order', 'CheckoutsController',['except'=>'edit','update','destroy']);
+});
+Route::post('oauth/access_token', function() {
+    return Response::json(Authorizer::issueAccessToken());
+});
+Route::group([
+    'prefix' => 'api',
+    'middleware'=>'oauth',
+    'as' =>'api.'
+        ], function() {
+    Route::get('pedidos', function(){
+        return [
+            'ID'=> '1',
+            'name'=> 'teste',
+            'total'=> '10',
+        ];
+    });
 });

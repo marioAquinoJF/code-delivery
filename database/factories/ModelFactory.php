@@ -64,3 +64,19 @@ $factory->define(Delivery\Models\Cupom::class, function (Faker\Generator $faker)
         'value' => rand(20,60)
     ];
 });
+$factory->define(Delivery\Models\Product::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'category_id' => rand(1, 10),
+        'description' => $faker->paragraph,
+        'price' => $faker->numberBetween(10, 50)
+    ];
+});
+$factory->define(OA\Models\Product::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'category_id' => rand(1, 10),
+        'description' => $faker->paragraph,
+        'price' => $faker->numberBetween(10, 50)
+    ];
+});

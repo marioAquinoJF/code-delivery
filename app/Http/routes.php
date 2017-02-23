@@ -1,5 +1,7 @@
 <?php
+
 use Illuminate\Http\Request;
+
 /*
   |--------------------------------------------------------------------------
   | Application Routes
@@ -28,7 +30,7 @@ Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 Route::group([
     'prefix' => 'admin',
-    'middleware'=>'auth.checkrole:admin'
+    'middleware' => 'auth.checkrole:admin'
         ], function() {
     Route::resource('categories', 'CategoriesController');
     Route::resource('products', 'ProductsController');
@@ -39,23 +41,36 @@ Route::group([
 });
 Route::group([
     'prefix' => 'custumer',
-    'middleware'=>'auth.checkrole:client'
+    'middleware' => 'auth.checkrole:client'
         ], function() {
-    Route::resource('order', 'CheckoutsController',['except'=>'edit','update','destroy']);
+    Route::resource('order', 'CheckoutsController', ['except' => 'edit', 'update', 'destroy']);
 });
 Route::post('oauth/access_token', function() {
     return Response::json(Authorizer::issueAccessToken());
 });
-Route::group([
-    'prefix' => 'api',
-    'middleware'=>'oauth',
-    'as' =>'api.'
-        ], function() {
-    Route::get('pedidos', function(){
-        return [
-            'ID'=> '1',
-            'name'=> 'teste',
-            'total'=> '10',
-        ];
+
+Route::group(['prefix' => 'api', 'middleware' => 'oauth', 'as' => 'api.'], function() {
+    Route::get('authenticated ', 'Auth\Authenticated@userAuthenticated');
+    Route::group(['prefix' => 'client', 'middleware' => 'oauth.checkrole:client', 'as' => 'client.'], function() {
+
+        Route::resource('orders', 'ClientCheckoutController', ['except' => ['create', 'edit', 'update', 'destroy']]);
+
+        Route::get('pedidos', function() {
+            return [
+                'ID' => '1',
+                'name' => 'Cliente',
+                'total' => '10',
+            ];
+        });
+    });
+
+    Route::group(['prefix' => 'deliveryman', 'middleware' => 'oauth.checkrole:deliveryman', 'as' => 'deliveryman.'], function() {
+        Route::get('pedidos', function() {
+            return [
+                'ID' => '1',
+                'name' => 'Entregador',
+                'total' => '10',
+            ];
+        });
     });
 });

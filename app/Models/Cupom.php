@@ -13,13 +13,14 @@ class Cupom extends Model implements Transformable
 
     protected $table = 'cupoms';
     protected $fillable = [
+        'order_id',
         'code',
         'value'
     ];
 
     public function order()
     {
-        return $this->hasOne(Order::class);
+        return $this->belongsTo(Order::class);
     }
 
 }

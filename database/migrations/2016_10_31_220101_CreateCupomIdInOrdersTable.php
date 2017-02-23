@@ -12,9 +12,9 @@ class CreateCupomIdInOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->integer('cupom_id')->unsigned()->nullable();
-            $table->foreign('cupom_id')->references('id')->on('cupoms');
+        Schema::table('cupoms', function (Blueprint $table) {
+            $table->integer('order_id')->unsigned()->nullable();
+            $table->foreign('order_id')->references('id')->on('orders');
             
         });
     }

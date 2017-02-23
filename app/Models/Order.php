@@ -39,8 +39,5 @@ class Order extends Model
     {
         return $this->hasOne(Cupom::class);
     }
-    public function getTotalAttribute()
-    {
-        return $this->items()->sum('price');
-    }
+    
 }

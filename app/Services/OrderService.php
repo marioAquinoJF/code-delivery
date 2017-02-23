@@ -37,7 +37,7 @@ class OrderService
     public function create(array $data)
     {
         \DB::beginTransaction();
-        
+
         try {
             $data['status'] = 0;
             if (isset($data['cupom_code'])) {
@@ -49,31 +49,42 @@ class OrderService
             }
             $items = $data['items'];
             unset($data['items']);
+
             $order = $this->orderRepository->create($data);
-            
+
             $total = 0;
             foreach ($items as $item) {
-                $item['price'] = $this->productRepository->find($item['product_id'])->price;
-                $order->items()->create($item);                
-                $total += $item['price'] * $item['quantity'];
+                $item['price'] = (float)$this->productRepository->find($item['product_id'])->price;
+                $order->items()->create($item);
+                $total += ($item['price'] * (float)$item['quantity']);
             }
             $order->total = $total;
             if (isset($cupom)) {
                 $order->total = $total - $cupom->value;
             }
-            
+
             $order->save();
             \DB::commit();
-
+            return $order;
         } catch (\Exception $e) {
             \DB::rollback();
             throw $e;
         }
     }
+
     public function ordersByClient($clientId)
     {
-        return $this->orderRepository->scopeQuery(function($query) use ($clientId){
-            return $query->where('client_id','=',$clientId);
-        });
+        return $this->orderRepository->scopeQuery(function($query) use ($clientId) {
+                    return $query->where('client_id', '=', $clientId);
+                });
     }
+
+    public function order($orderId, array $relations = [])
+    {
+        if(count($relations) > 0):
+            return $this->orderRepository->with($relations)->find($orderId);
+        endif;
+        return $this->orderRepository->find($orderId);
+    }
+
 }

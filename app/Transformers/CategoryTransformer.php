@@ -3,7 +3,7 @@
 namespace Delivery\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use Delivery\Entities\Category;
+use Delivery\Models\Category;
 
 /**
  * Class CategoryTransformer

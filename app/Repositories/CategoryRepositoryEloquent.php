@@ -5,7 +5,7 @@ namespace Delivery\Repositories;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Delivery\Repositories\CategoryRepository;
-use Delivery\Entities\Category;
+use Delivery\Models\Category;
 use Delivery\Validators\CategoryValidator;
 
 /**

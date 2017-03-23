@@ -3,7 +3,7 @@
 namespace Delivery\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use Delivery\Entities\Client;
+use Delivery\Models\Client;
 
 /**
  * Class ClientTransformer
@@ -21,12 +21,14 @@ class ClientTransformer extends TransformerAbstract
     public function transform(Client $model)
     {
         return [
-            'id'         => (int) $model->id,
-
-            /* place your other model properties here */
-
-            'created_at' => $model->created_at,
-            'updated_at' => $model->updated_at
+            'id' => (int) $model->id,
+            'name' => $model->user->name,
+            'email' => $model->user->email,
+            'address' => $model->address,
+            'zipcode' => $model->zipcode,
+            'city' => $model->city,
+            'state' => $model->state
         ];
     }
+
 }

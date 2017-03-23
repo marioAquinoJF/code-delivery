@@ -2,10 +2,11 @@
 
 namespace Delivery\Http\Requests;
 
-use Delivery\Http\Requests\Request;
+use Illuminate\Http\Request as HttpRequest;
 
 class CheckoutCreateRequest extends Request
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -21,10 +22,24 @@ class CheckoutCreateRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(HttpRequest $request)
     {
-        return [
-            //
+        $rules = [
+            'cupom_code' => 'exists:cupoms,code,used,0'
         ];
+        $this->buildRulesItems(0, $rules);
+        $items = $request->get('itmes',[]);
+        $items = !is_array($items) ? [] : $items;
+        foreach ($items as $key => $val){
+            $this->buildRulesItemes($key, $rules);
+        }
+        return $rules;
     }
+
+    public function buildRulesItems($key, array &$rules)
+    {
+        $rules["items.$key.product_id"] = 'required';
+        $rules["items.$key.quantity"] = 'required';
+    }
+
 }

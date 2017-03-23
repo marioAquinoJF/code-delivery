@@ -1,45 +1,42 @@
 <?php
 
-namespace Delivery\Http\Controllers;
+namespace Delivery\Http\Controllers\Api\Client;
 
+use Delivery\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Delivery\Http\Requests;
 use Delivery\Http\Controllers\Controller;
-use Delivery\Repositories\OrderRepository;
-use Delivery\Repositories\ProductRepository;
+use Delivery\Repositories\ClientRepository;
 use Delivery\Repositories\UserRepository;
+use Delivery\Http\Requests\CreateClientRequest;
+use Delivery\Services\ClientService;
 
-class OrdersController extends Controller
+class ClientsController extends Controller
 {
 
     /**
      *
-     * @var OrderRepository 
+     * @var ClientRepository
      */
     private $repository;
 
     /**
      *
-     * @var OrderService 
-     */
-    private $service;
-    /**
-     *
-     * @var ProductRepository 
-     */
-    private $productRepository;
-
-    /**
-     *
-     * @var UserRepository 
+     * @var UserRepository
      */
     private $userRepository;
 
-    function __construct(OrderRepository $repository, ProductRepository $productRepository, UserRepository $userRepository)
+    /**
+     *
+     * @var ClientService
+     */
+    private $service;
+
+    function __construct(ClientRepository $repository, UserRepository $userRepository, ClientService $service)
     {
         $this->repository = $repository;
-        $this->productRepository = $productRepository;
         $this->userRepository = $userRepository;
+        $this->service = $service;
     }
 
     /**
@@ -49,9 +46,8 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = $this->repository->with('items')->paginate(10);
-        //  dd($orders);
-        return view('orders.index', compact('orders'));
+        $clients = $this->repository->all();
+        return view('clients.index', compact('clients'));
     }
 
     /**
@@ -61,8 +57,7 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        $products = $this->productRepository->all();
-        return view('orders.create', compact('products'));
+        return view('clients.create');
     }
 
     /**
@@ -71,9 +66,10 @@ class OrdersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateClientRequest $request)
     {
-        dd($request->all());
+       $client = $this->service->create($request->all());
+        return redirect()->route('admin.clients.index');
     }
 
     /**
@@ -84,11 +80,7 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        $order = $this->repository->with('deliveryman','items')->find($id);
-        $users = $this->userRepository->deliveryMan()->lists('name', 'id');
-        $client = $order->client;
-        $products = $this->productRepository->all();
-        return view('orders.show', compact('order', 'users', 'client','products'));
+        //
     }
 
     /**
@@ -99,11 +91,9 @@ class OrdersController extends Controller
      */
     public function edit($id)
     {
-        $users = $this->userRepository->deliveryMan()->lists('name', 'id'); //findWhere(['role','=','deliveryMan']);
-        $order = $this->repository->find($id);
-        $orderStatus = $this->repository->status();
-        $products = $this->productRepository->all();
-        return view('orders.edit', compact('order', 'users', 'orderStatus','products'));
+        $client = $this->repository->find($id);
+
+        return view('clients.edit', compact('client', 'categories'));
     }
 
     /**
@@ -115,8 +105,9 @@ class OrdersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->repository->update($request->all(), $id);
-        return redirect()->back();
+  
+        $this->service->update($request->all(), $id);
+        return redirect()->route('admin.clients.index');
     }
 
     /**
@@ -127,7 +118,8 @@ class OrdersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->delete($id);
+        return redirect()->route('admin.clients.index');
     }
 
 }

@@ -26,14 +26,14 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public function deliveryMan()
+    public function deliveryman()
     {
         return $this->belongsTo(User::class, 'user_deliveryman_id', 'id');
     }
 
     public function client()
     {
-        return $this->belongsTo(User::class, 'client_id', 'id')->with('client');
+        return $this->belongsTo(Client::class);
     }
     public function cupom()
     {

@@ -18,7 +18,7 @@
                         <b>CEP:</b> {{$client->zipcode}}
                     </li>
                     <li class="list-group-item">
-                        <b>Entregador:</b> {{$order->deliveryMan->name}}
+                        <b>Entregador:</b> {{$order->deliveryMan ? $order->deliveryMan->name : 'sem entregador'}}
                     </li>
                     <li class="list-group-item">
                         <b>Total:</b> {{$order->total}}
@@ -61,7 +61,7 @@
             <div class="col-sm-2">
                 <br/>
 
-                <ul class="list-group">
+                <!--ul class="list-group">
                     <li class="list-group-item">
                         {!!Form::model($order,['route'=>['admin.orders.update',$order->id], 'method'=>'PUT'])!!}
                         @include("orders._form")
@@ -69,7 +69,7 @@
                         {!!Form::close()!!}
                     </li>
 
-                </ul>
+                </ul-->
             </div>
         </div>
     </div>

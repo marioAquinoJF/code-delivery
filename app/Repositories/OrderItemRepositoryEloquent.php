@@ -7,13 +7,14 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Delivery\Repositories\OrderItemRepository;
 use Delivery\Models\OrderItem;
 use Delivery\Validators\OrderItemValidator;
-
+use Illuminate\Database\Eloquent\Collection;
 /**
  * Class OrderItemRepositoryEloquent
  * @package namespace Delivery\Repositories;
  */
 class OrderItemRepositoryEloquent extends BaseRepository implements OrderItemRepository
 {
+
     /**
      * Specify Model class name
      *

@@ -1,10 +1,10 @@
-// Ionic Starter App
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'starter.controllers', 'angular-oauth2'])
-
+angular.module('starter.controllers', []);
+angular.module('starter.services', []);
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-oauth2', 'ngResource'])
+        .constant('appConfig', {
+            baseUrl: 'http://delivery'
+        })
         .run(function ($ionicPlatform)
         {
             $ionicPlatform.ready(function ()
@@ -24,11 +24,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angular-oauth2'])
                 }
             });
         })
-        .config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider',
-            function ($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider)
+        .config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfig',
+            function ($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, appConfig)
             {
                 OAuthProvider.configure({
-                    baseUrl: 'http://delivery',
+                    baseUrl: appConfig.baseUrl,
                     clientId: 'appid01',
                     clientSecret: 'secret', // optional
                     grantPath: '/oauth/access_token'
@@ -51,7 +51,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angular-oauth2'])
                             templateUrl: 'templates/home.html',
                             controller: 'HomeCtrl'
                         })
-
-                        ;
+                        .state('client', {
+                            url: '/client',
+                            abstract: true,
+                            template: '<ion-nav-view/>'
+                        })
+                        .state('client.checkout', {
+                            cache: false,
+                            url: '/checkout',
+                            templateUrl: 'templates/client/checkout.html',
+                            controller: 'ClientCheckoutCtrl'
+                        })
+                        .state('client.checkout_item_detail', {
+                            url: '/checkout/detail/:index',
+                            templateUrl: 'templates/client/checkout-detail.html',
+                            controller: 'ClientCheckoutDetailCtrl'
+                        })
+                        .state('client.checkout_successfull', {
+                            url: '/checkout_successfull',
+                            templateUrl: 'templates/client/checkout-successfull.html',
+                            controller: 'ClientCheckoutSuccessfullCtrl'
+                        })
+                        .state('client.orders', {
+                            url: '/orders',
+                            templateUrl: 'templates/client/orders-list.html',
+                            controller: 'ClientOrderListCtrl'
+                        })
+                        .state('client.view_products', {
+                            url: '/view_products',
+                            templateUrl: 'templates/client/view-product.html',
+                            controller: 'ClientViewProductCtrl'
+                        });
                 // $urlRouterProvider.otherwise('/');
             }]);

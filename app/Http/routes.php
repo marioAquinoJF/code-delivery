@@ -61,6 +61,7 @@ Route::group([
                 ], function() {
 
             Route::resource('orders', 'Api\Client\ClientCheckoutController', ['except' => ['create', 'edit', 'update', 'destroy']]);
+            Route::get('products', 'Api\Client\ClientProductsController@index');
         });
 
         Route::group(['prefix' => 'deliveryman', 'middleware' => 'oauth.checkrole:deliveryman', 'as' => 'deliveryman.'], function() {

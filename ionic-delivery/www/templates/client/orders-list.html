@@ -1,0 +1,28 @@
+<ion-view>
+    <ion-nav-title>
+       Meus Pedidos
+    </ion-nav-title> 
+        <div class="bar bar-subheader">
+        <button class="button button-icon ion-plus" ng-click="opeListProducts()"></button>
+        <h2 class="title">Total: R$ {{total}}</h2>
+    </div>
+    <ion-content class="padding has-subheader">
+        <ion-list show-delete="showDelete">
+            <ion-item ng-repeat="o in orders" ng-click="openOrderDatail($index)">
+                <h2 class='text-center'><b>Feita em:</b> {{o.created_at.date }}</h2>
+                <div class="row text-center">
+                    <div class="col">
+                        <b>Status:</b> {{o.status}}
+                    </div>
+                    
+                    <div class="col">
+                        <b>Total de itens:</b> {{o.total_items}}<br/>
+                        <i class="ion ion-cash"> {{o.total}}</i>
+                    </div>
+                </div>    
+            </ion-item>
+        </ion-list>
+      
+    </ion-content>
+
+</ion-view>

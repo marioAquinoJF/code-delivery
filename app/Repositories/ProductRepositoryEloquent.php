@@ -5,6 +5,7 @@ namespace Delivery\Repositories;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Delivery\Repositories\ProductRepository;
+use Delivery\Presenters\ProductPresenter;
 use Delivery\Models\Product;
 use Delivery\Validators\ProductValidator;
 
@@ -14,7 +15,7 @@ use Delivery\Validators\ProductValidator;
  */
 class ProductRepositoryEloquent extends BaseRepository implements ProductRepository
 {
-
+    protected $skipPresenter = true;
     /**
      * Specify Model class name
      *
@@ -37,5 +38,8 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
     {
         return $this->model->lists('name', 'id');
     }
-
+    public function presenter()
+    {
+        return ProductPresenter::class;
+    }
 }

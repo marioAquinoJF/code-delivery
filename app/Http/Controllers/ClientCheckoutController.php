@@ -39,14 +39,14 @@ class ClientCheckoutController extends Controller
     {
         $userId = Authorizer::getResourceOwnerId();
         $client = $this->userRepository->find($userId)->client;
-        $orders = $this->service->ordersByClient($client->id)->all();
+        $orders = $this->service->ordersByClient($client->id, ['items', 'cupom'])->all();
         return response($orders, 200);
     }
 
     public function show($orderId)
     {
-        $order = $this->service->order($orderId,['items','client','cupom']);
-        $order->items->each(function($item){
+        $order = $this->service->order($orderId, ['items', 'client', 'cupom']);
+        $order->items->each(function($item) {
             $item->product;
         });
         return response($order, 200);
@@ -63,7 +63,7 @@ class ClientCheckoutController extends Controller
             $data['client_id'] = $client->id;
             $order = $this->service->create($data);
 
-            return response($this->service->order($order->id,['items']), 200);
+            return response($this->service->order($order->id, ['items']), 200);
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([

@@ -5,12 +5,14 @@
     "ionic": "driftyco/ionic-bower#1.3.3"
   },
   "dependencies": {
+    "angular": "1.5.3",
     "angular-cookies": "1.5.3",
     "angular-oauth2": "^4.1.0",
-    "query-string": "1.0.1"
+    "query-string": "1.0.1",
+    "angular-resource": "1.5.3"
   },
   "resolutions": {
-    "query-string": "^4.3.2",
-    "angular": "1.6.3"
+    "angular-cookies": "1.5.9",
+    "angular": ">= 1.0.8"
   }
 }

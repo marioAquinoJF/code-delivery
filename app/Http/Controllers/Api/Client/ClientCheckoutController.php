@@ -41,7 +41,7 @@ class ClientCheckoutController extends Controller
     {
         $userId = Authorizer::getResourceOwnerId();
         $client = $this->userRepository->find($userId)->client;
-        $orders = $this->service->ordersByClient($client->id, $this->with, true)->all();
+        $orders = $this->service->ordersByClient($client->id, $this->with)->all();
         return response($orders, 200);
     }
 

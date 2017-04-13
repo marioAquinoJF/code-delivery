@@ -82,7 +82,7 @@ class OrderService
 
     public function ordersByClient($clientId, $with = [], $presenter = true)
     {
-        return $this->orderRepository->with($with)->skipPresenter($presenter)->scopeQuery(function($query) use ($clientId) {
+        return $this->orderRepository->with($with)->skipPresenter(!$presenter)->scopeQuery(function($query) use ($clientId) {
                     return $query->where('client_id', '=', $clientId);
                 });
     }

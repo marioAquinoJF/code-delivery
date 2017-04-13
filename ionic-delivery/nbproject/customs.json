@@ -1,0 +1,10 @@
+{
+    "elements": {
+        "ion-list": {},
+        "ion-delete-button": {},
+        "ion-item": {},
+        "ion-content": {},
+        "ion-view": {}
+    },
+    "attributes": {}
+}

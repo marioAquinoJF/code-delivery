@@ -42,7 +42,7 @@ class CheckoutsController extends Controller
     {
 
         $clientId = auth()->user()->client->id;
-        $orders = $this->service->ordersByClient($clientId)->paginate(2);
+        $orders = $this->service->ordersByClient($clientId,['client','items',false])->paginate(2);
         return view('custumers.order.index', compact('orders'));
     }
 

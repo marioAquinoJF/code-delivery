@@ -15,7 +15,8 @@ class Cupom extends Model implements Transformable
     protected $fillable = [
         'order_id',
         'code',
-        'value'
+        'value',
+        'used'
     ];
 
     public function order()

@@ -12,8 +12,8 @@ angular.module('starter.controllers')
                             OAuth.getAccessToken($scope.user).then(
                                     function (data)
                                     {
-                                         console.log(data);
-                                        $state.go('home');
+                                        
+                                        $state.go('client.checkout');
                                     },
                                     function (reponseError)
                                     {

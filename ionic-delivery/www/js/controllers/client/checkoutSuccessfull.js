@@ -4,8 +4,10 @@ angular.module('starter.controllers')
                     function ($scope, $state, $cart)
                     {
                         var cart = $cart.get();
+                        console.log(cart.cupom);
+                        $scope.cupom = cart.cupom;
                         $scope.items = cart.items;
-                        $scope.total = cart.total;
+                        $scope.total = $cart.getTotalFinal();
                         $cart.clear();
                         $scope.openListOrder = function(){
                             $state.go('client.orders');

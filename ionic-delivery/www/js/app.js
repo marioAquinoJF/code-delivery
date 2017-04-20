@@ -1,9 +1,10 @@
 
 angular.module('starter.controllers', []);
 angular.module('starter.services', []);
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'angular-oauth2', 'ngResource'])
+angular.module('starter', ['ionic', 'starter.controllers', 
+    'starter.services', 'angular-oauth2', 'ngResource', 'ngCordova'])
         .constant('appConfig', {
-            baseUrl: 'http://delivery'
+            baseUrl: 'http://192.168.1.10:8000'
         })
         .run(function ($ionicPlatform)
         {
@@ -24,8 +25,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 }
             });
         })
-        .config(['$stateProvider', '$urlRouterProvider', 'OAuthProvider', 'OAuthTokenProvider', 'appConfig',
-            function ($stateProvider, $urlRouterProvider, OAuthProvider, OAuthTokenProvider, appConfig)
+        .config(['$stateProvider', '$urlRouterProvider', '$provide', 'OAuthProvider', 'OAuthTokenProvider', 'appConfig',
+            function ($stateProvider, $urlRouterProvider, $provide, OAuthProvider, OAuthTokenProvider, appConfig)
             {
                 OAuthProvider.configure({
                     baseUrl: appConfig.baseUrl,
@@ -68,6 +69,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                             controller: 'ClientCheckoutDetailCtrl'
                         })
                         .state('client.checkout_successfull', {
+                            cache: false,
                             url: '/checkout_successfull',
                             templateUrl: 'templates/client/checkout-successfull.html',
                             controller: 'ClientCheckoutSuccessfullCtrl'
@@ -82,5 +84,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                             templateUrl: 'templates/client/view-product.html',
                             controller: 'ClientViewProductCtrl'
                         });
-                // $urlRouterProvider.otherwise('/');
+                $urlRouterProvider.otherwise('/login');
+                $provide.decorator('OAuthToken', ['$localStorage', '$delegate',
+                    function ($localStorage, $delegate)
+                    {
+                        Object.defineProperties($delegate, {
+                            setToken: {
+                                value: function (data)
+                                {
+                                    return $localStorage.setObject('token', data);
+                                },
+                                enumerable: true,
+                                configurable: true,
+                                writable: true
+                            },
+                            getToken: {
+                                value: function ()
+                                {
+                                    return $localStorage.getObject('token');
+                                },
+                                enumerable: true,
+                                configurable: true,
+                                writable: true
+
+                            },
+                            removeToken: {
+                                value: function ()
+                                {
+                                    return $localStorage.setObject('token', null);
+                                },
+                                enumerable: true,
+                                configurable: true,
+                                writable: true
+
+                            }
+                        });
+                        return $delegate;
+                    }
+                ]);
             }]);
